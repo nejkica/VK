@@ -1,0 +1,18 @@
+.btn {
+
+	&__isci { /* p */
+		text-decoration: none;
+		float: right;
+		background-color: $mainBtn;
+		color: #FFF;
+		padding: 8px 20px;
+		text-transform: uppercase;
+		font-size: 1rem;
+		font-weight: 300;
+		margin: 25px 10px;
+		width: 100px;
+		text-align: center;
+		cursor: pointer;
+
+	}
+}

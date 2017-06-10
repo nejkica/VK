@@ -1,0 +1,9 @@
+.zadetki-sklop {
+	position: relative;
+	display: block;
+	
+	&__razlaga {
+		padding: 5px 0;
+		background-color: rgba($mainHeader, .3);
+	}
+}

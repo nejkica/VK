@@ -1,0 +1,20 @@
+.input{
+
+	&__sklop {
+		position: absolute;
+		display: inline-block;
+		height: 2rem;
+		width: 3rem;
+		float: left;
+
+	}
+
+	&__tekst {
+		position: absolute;
+		display: inline-block;
+		height: 6rem;
+		width: calc(100% - 120px - 4rem);
+		float: left;
+		margin-left: 4rem;
+	}
+}
