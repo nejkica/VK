@@ -13621,6 +13621,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var izdelajTabelo = new _izdelajTabelo2.default();
+
 var Ajax = function () {
 	function Ajax() {
 		_classCallCheck(this, Ajax);
@@ -13661,14 +13663,15 @@ var Ajax = function () {
 			});
 
 			socket.on('vodovodKoroskaVrnjeno', function (data) {
+				// console.log(data);
 				arrRezultat.push(data);
 			});
 
 			socket.on('vodovodKoroskaZadnjaVrstica', function (data) {
-				// console.log(data);
+
 				arrRezultat.push(data);
-				var izdelajTabelo = new _izdelajTabelo2.default('test');
-				izdelajTabelo(arrRezultat);
+				// console.log(arrRezultat);
+				izdelajTabelo.napolniSklop(arrRezultat);
 
 				socket.emit('zapriSejo');
 			});
@@ -13796,12 +13799,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var IzdelajTabelo = function () {
-	function IzdelajTabelo(rezultat) {
+	function IzdelajTabelo() {
 		_classCallCheck(this, IzdelajTabelo);
 
 		this.tabelaSklop = (0, _jquery2.default)('.zadetki-sklop__tabela');
-		this.napolniSklop(rezultat);
-		this.rezultat = rezultat;
+		// this.napolniSklop(rezultat);
+		// this.rezultat = rezultat;
 		// console.log('rezultat ' + this.rezultat);
 	}
 
@@ -13809,11 +13812,27 @@ var IzdelajTabelo = function () {
 		key: 'napolniSklop',
 		value: function napolniSklop(rezultat) {
 			var that = this;
-			console.log(rezultat);
-			// that.tabelaSklop.on('load', function(){
-			that.tabelaSklop.append('<p>test</p>');
-			// });
+			var stRezultatov = rezultat.length - 1;
+
+			if (stRezultatov > 0) {
+				console.log(Object.keys(rezultat[0]).length);
+				var naslovi = Object.keys(rezultat[0]);
+				var stElementov = Object.keys(rezultat[0]).length;
+
+				that.tabelaSklop.append('<div class="tabela tabela__sklop--naslov"></div>');
+
+				for (var i = 0; i < stElementov; i++) {
+					that.tabelaSklop.append('<div class="tabela tabela__sklop--naslov--td">' + rezultat[0].cena + '</div>');
+				}
+
+				for (var i = 0; i < stRezultatov; i++) {
+					that.tabelaSklop.append('<div class="tabela tabela__sklop">' + rezultat[0].cena + '</div>');
+				}
+			}
 		}
+	}, {
+		key: 'sestaviTabelo',
+		value: function sestaviTabelo(arrElementov) {}
 	}]);
 
 	return IzdelajTabelo;

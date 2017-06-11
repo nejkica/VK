@@ -1,6 +1,9 @@
 import $ from 'jquery';
 import io from 'socket.io-client';
-import IzdelajTabelo from './izdelajTabelo';
+import it from './izdelajTabelo';
+
+
+let izdelajTabelo = new it();
 
 
 class Ajax {
@@ -39,14 +42,15 @@ class Ajax {
 		});
 
 		socket.on('vodovodKoroskaVrnjeno', function(data){
+			// console.log(data);
 			arrRezultat.push(data);
 		});
 
 		socket.on('vodovodKoroskaZadnjaVrstica', function(data){
-			// console.log(data);
+			
 			arrRezultat.push(data);
-			var izdelajTabelo = new IzdelajTabelo('test');
-			izdelajTabelo(arrRezultat);
+			// console.log(arrRezultat);
+			izdelajTabelo.napolniSklop(arrRezultat);
 
 			socket.emit('zapriSejo');
 		});
