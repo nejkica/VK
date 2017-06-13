@@ -1,0 +1,150 @@
+.tabela {
+
+	&__sklop--naslov {
+		display: table-header-group;
+		background-color: rgba($tabelaSklop, .3);
+		width: 100vw;
+		overflow: hidden;
+		/*white-space: nowrap;*/
+	}
+
+	&__sklop--naslov--td {
+		position: relative;
+		display: table-cell;
+		/*width: $sirina1;*/
+		border: 1px solid rgba($mainHeader, .5);
+		border-right: none;
+		padding: 7px 5px;
+	}
+
+	&__sklop--rezultati {
+		position: relative;
+		display: table-row;
+		border-bottom: 1px solid rgba($mainHeader, .5);
+		padding: 0;
+		margin: 0;
+		overflow: hidden;
+		width: 100%;
+		/*white-space: nowrap;*/
+	}
+
+	&__sklop--rezultati--td {
+		position: relative;
+		display: table-cell;
+		vertical-align: top;
+		padding: 2px 5px;
+		margin: 0;
+		/*border: none;*/
+		border-left: 1px solid rgba($mainHeader, .5);
+
+
+	}
+
+	/*----------------------------------------------------------------------*/
+
+	&__obcina--naslov {
+		display: table-header-group;
+		background-color: rgba($tabelaObcina, .3);
+		width: 100vw;
+		overflow: hidden;
+		/*white-space: nowrap;*/
+	}
+
+	&__obcina--naslov--td {
+		position: relative;
+		display: table-cell;
+		/*width: $sirina1;*/
+		border: 1px solid rgba($mainHeader, .5);
+		border-right: none;
+		padding: 7px 5px;
+	}
+
+	&__obcina--rezultati {
+		position: relative;
+		display: table-row;
+		border-bottom: 1px solid rgba($mainHeader, .5);
+		padding: 0;
+		margin: 0;
+		overflow: hidden;
+		width: 100%;
+		/*white-space: nowrap;*/
+	}
+
+	&__obcina--rezultati--td {
+		position: relative;
+		display: table-cell;
+		vertical-align: top;
+		padding: 2px 5px;
+		margin: 0;
+		/*border: none;*/
+		border-left: 1px solid rgba($mainHeader, .5);
+
+
+	}
+
+	/*--------------------------------------------------------------------*/
+
+	&__projekt--naslov {
+		display: table-header-group;
+		background-color: rgba($tabelaProjekt, .3);
+		width: 100vw;
+		overflow: hidden;
+		/*white-space: nowrap;*/
+	}
+
+	&__projekt--naslov--td {
+		position: relative;
+		display: table-cell;
+		/*width: $sirina1;*/
+		border: 1px solid rgba($mainHeader, .5);
+		border-right: none;
+		padding: 7px 5px;
+	}
+
+	&__projekt--rezultati {
+		position: relative;
+		display: table-row;
+		border-bottom: 1px solid rgba($mainHeader, .5);
+		padding: 0;
+		margin: 0;
+		overflow: hidden;
+		width: 100%;
+		/*white-space: nowrap;*/
+	}
+
+	&__projekt--rezultati--td {
+		position: relative;
+		display: table-cell;
+		vertical-align: top;
+		padding: 2px 5px;
+		margin: 0;
+		/*border: none;*/
+		border-left: 1px solid rgba($mainHeader, .5);
+
+
+	}
+}
+
+.opis {
+	/*display: inline-block;*/
+	/*width: calc( 100vw - 16vw );*/
+}
+
+.wbs {
+	/*width: 5vw;*/
+	width: 120px;
+	/*min-width: 80px;*/
+}
+
+.cena {
+	/*width: 5vw;*/
+	/*min-width: 60px;*/
+	text-align: right;
+}
+
+.podobnost {
+	/*width: 5vw;*/
+	/*min-width: 85px;*/
+	text-align: right;
+	border-right: 1px solid rgba($mainHeader, .5);
+}

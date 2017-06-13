@@ -1,0 +1,7 @@
+.footer {
+	background-color: rgba($mainHeader, .8);
+	color: #FFF;
+	text-align: center;
+	padding: 30px 0;
+	font-weight: 200;
+}

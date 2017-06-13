@@ -4,7 +4,11 @@
 @import "base/_global";
 @import "modules/general";
 @import "modules/header";
+@import "modules/footer";
 @import "modules/input";
 @import "modules/btn";
 @import "modules/zadetki-sklop";
+@import "modules/zadetki-obcina";
+@import "modules/zadetki-projekt";
 @import "modules/razlaga";
+@import "modules/tabela";

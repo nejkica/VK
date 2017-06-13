@@ -8,11 +8,13 @@ let izdelajTabelo = new it();
 
 class Ajax {
 	constructor() {
-		this.target = $('.zadetki-sklop__tabela');
+		this.sklop = $('.zadetki-sklop__tabela');
+		this.obcina = $('.zadetki-obcina__tabela');
+		this.projekt = $('.zadetki-projekt__tabela');
 		this.btnIsci = $('.btn__isci');
-		this.sklop = $('.input__sklop');
-		this.tekst = $('.input__tekst');
-		this.vnesiVtabelo(this.target);
+		this.insklop = $('.input__sklop');
+		this.intekst = $('.input__tekst');
+		this.vnesiVtabelo(this.sklop); //samo za prvi prikaz - navodilo za vnos v polja
 		this.events();
 	}
 
@@ -20,10 +22,12 @@ class Ajax {
 		var that = this;
 		
 		that.btnIsci.click(function(){
-			var sklopVsebina = that.sklop.val().trim();
-			var tekstVsebina = that.tekst.val().trim();
+			var sklopVsebina = that.insklop.val().trim();
+			var tekstVsebina = that.intekst.val().trim();
 			// console.log('klik ' + sklopVsebina + ' ' + tekstVsebina);
-			that.target.empty();
+			that.sklop.empty();
+			that.obcina.empty();
+			that.projekt.empty();
 
 			that.posljiPoizvedbo(sklopVsebina, tekstVsebina);
 			
@@ -31,8 +35,25 @@ class Ajax {
 	}
 
 	posljiPoizvedbo(sklpVsebina, tkstVsebina) {
+		var that = this;
+
 		var socket = io.connect('http://192.168.112.200:8888');
 		var arrRezultat = [];
+		var arrRezultatObcina = [];
+		var arrRezultatProjekt = [];
+
+		// var sklopKonec = 0;
+		// var obcinaKonec = 0;
+		// var projektKonec = 0;
+		var konec = 0;
+
+		function koncaj () {
+			konec += 1;
+
+			if (konec == 3) {
+				socket.emit('zapriSejo');
+			}
+		}
 
 		// console.log('klik 12 ' + sklpVsebina + ' ' + tkstVsebina);
 
@@ -46,14 +67,46 @@ class Ajax {
 			arrRezultat.push(data);
 		});
 
-		socket.on('vodovodKoroskaZadnjaVrstica', function(data){
+		socket.on('vodovodKoroskaZadnjaVrstica', function(data){ //data je v tem primeru samo 'konec'
 			
 			arrRezultat.push(data);
-			// console.log(arrRezultat);
-			izdelajTabelo.napolniSklop(arrRezultat);
+			// console.log(data);
+			izdelajTabelo.napolniTabelo(arrRezultat, 'sklop');
 
-			socket.emit('zapriSejo');
+			koncaj();
+			// socket.emit('zapriSejo');
 		});
+
+		socket.on('vodovodKoroskaObcinaVrnjeno', function(data){
+			// console.log(data);
+			arrRezultatObcina.push(data);
+		});
+
+		socket.on('vodovodKoroskaZadnjaVrsticaObcina', function(data){ //data je v tem primeru samo 'konec'
+			
+			arrRezultatObcina.push(data);
+			// console.log(data);
+			izdelajTabelo.napolniTabelo(arrRezultatObcina, 'obcina');
+
+			koncaj();
+			// socket.emit('zapriSejo');
+		});
+
+		socket.on('vodovodKoroskaProjektVrnjeno', function(data){
+			// console.log(data);
+			arrRezultatProjekt.push(data);
+		});
+
+		socket.on('vodovodKoroskaZadnjaVrsticaProjekt', function(data){ //data je v tem primeru samo 'konec'
+			
+			arrRezultatProjekt.push(data);
+			// console.log(data);
+			izdelajTabelo.napolniTabelo(arrRezultatProjekt, 'projekt');
+
+			koncaj();
+			// socket.emit('zapriSejo');
+		});
+
 
 	}
 

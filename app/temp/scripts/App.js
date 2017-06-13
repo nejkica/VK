@@ -13627,11 +13627,13 @@ var Ajax = function () {
 	function Ajax() {
 		_classCallCheck(this, Ajax);
 
-		this.target = (0, _jquery2.default)('.zadetki-sklop__tabela');
+		this.sklop = (0, _jquery2.default)('.zadetki-sklop__tabela');
+		this.obcina = (0, _jquery2.default)('.zadetki-obcina__tabela');
+		this.projekt = (0, _jquery2.default)('.zadetki-projekt__tabela');
 		this.btnIsci = (0, _jquery2.default)('.btn__isci');
-		this.sklop = (0, _jquery2.default)('.input__sklop');
-		this.tekst = (0, _jquery2.default)('.input__tekst');
-		this.vnesiVtabelo(this.target);
+		this.insklop = (0, _jquery2.default)('.input__sklop');
+		this.intekst = (0, _jquery2.default)('.input__tekst');
+		this.vnesiVtabelo(this.sklop); //samo za prvi prikaz - navodilo za vnos v polja
 		this.events();
 	}
 
@@ -13641,10 +13643,12 @@ var Ajax = function () {
 			var that = this;
 
 			that.btnIsci.click(function () {
-				var sklopVsebina = that.sklop.val().trim();
-				var tekstVsebina = that.tekst.val().trim();
+				var sklopVsebina = that.insklop.val().trim();
+				var tekstVsebina = that.intekst.val().trim();
 				// console.log('klik ' + sklopVsebina + ' ' + tekstVsebina);
-				that.target.empty();
+				that.sklop.empty();
+				that.obcina.empty();
+				that.projekt.empty();
 
 				that.posljiPoizvedbo(sklopVsebina, tekstVsebina);
 			});
@@ -13652,8 +13656,25 @@ var Ajax = function () {
 	}, {
 		key: 'posljiPoizvedbo',
 		value: function posljiPoizvedbo(sklpVsebina, tkstVsebina) {
+			var that = this;
+
 			var socket = _socket2.default.connect('http://192.168.112.200:8888');
 			var arrRezultat = [];
+			var arrRezultatObcina = [];
+			var arrRezultatProjekt = [];
+
+			// var sklopKonec = 0;
+			// var obcinaKonec = 0;
+			// var projektKonec = 0;
+			var konec = 0;
+
+			function koncaj() {
+				konec += 1;
+
+				if (konec == 3) {
+					socket.emit('zapriSejo');
+				}
+			}
 
 			// console.log('klik 12 ' + sklpVsebina + ' ' + tkstVsebina);
 
@@ -13668,12 +13689,46 @@ var Ajax = function () {
 			});
 
 			socket.on('vodovodKoroskaZadnjaVrstica', function (data) {
+				//data je v tem primeru samo 'konec'
 
 				arrRezultat.push(data);
-				// console.log(arrRezultat);
-				izdelajTabelo.napolniSklop(arrRezultat);
+				// console.log(data);
+				izdelajTabelo.napolniTabelo(arrRezultat, 'sklop');
 
-				socket.emit('zapriSejo');
+				koncaj();
+				// socket.emit('zapriSejo');
+			});
+
+			socket.on('vodovodKoroskaObcinaVrnjeno', function (data) {
+				// console.log(data);
+				arrRezultatObcina.push(data);
+			});
+
+			socket.on('vodovodKoroskaZadnjaVrsticaObcina', function (data) {
+				//data je v tem primeru samo 'konec'
+
+				arrRezultatObcina.push(data);
+				// console.log(data);
+				izdelajTabelo.napolniTabelo(arrRezultatObcina, 'obcina');
+
+				koncaj();
+				// socket.emit('zapriSejo');
+			});
+
+			socket.on('vodovodKoroskaProjektVrnjeno', function (data) {
+				// console.log(data);
+				arrRezultatProjekt.push(data);
+			});
+
+			socket.on('vodovodKoroskaZadnjaVrsticaProjekt', function (data) {
+				//data je v tem primeru samo 'konec'
+
+				arrRezultatProjekt.push(data);
+				// console.log(data);
+				izdelajTabelo.napolniTabelo(arrRezultatProjekt, 'projekt');
+
+				koncaj();
+				// socket.emit('zapriSejo');
 			});
 		}
 	}, {
@@ -13803,36 +13858,113 @@ var IzdelajTabelo = function () {
 		_classCallCheck(this, IzdelajTabelo);
 
 		this.tabelaSklop = (0, _jquery2.default)('.zadetki-sklop__tabela');
-		// this.napolniSklop(rezultat);
-		// this.rezultat = rezultat;
-		// console.log('rezultat ' + this.rezultat);
+		this.tabelaObcina = (0, _jquery2.default)('.zadetki-obcina__tabela');
+		this.tabelaProjekt = (0, _jquery2.default)('.zadetki-projekt__tabela');
 	}
 
 	_createClass(IzdelajTabelo, [{
-		key: 'napolniSklop',
-		value: function napolniSklop(rezultat) {
+		key: 'napolniTabelo',
+		value: function napolniTabelo(rezultat, cilj) {
+			var that = this;
+
+			if (cilj == 'sklop') {
+				that.sklop(rezultat);
+			} else if (cilj == 'obcina') {
+				that.obcina(rezultat);
+			} else {
+				that.projekt(rezultat);
+			}
+		}
+	}, {
+		key: 'sklop',
+		value: function sklop(rezultat) {
 			var that = this;
 			var stRezultatov = rezultat.length - 1;
 
 			if (stRezultatov > 0) {
-				console.log(Object.keys(rezultat[0]).length);
+				// console.log(Object.keys(rezultat[0]).length);
 				var naslovi = Object.keys(rezultat[0]);
 				var stElementov = Object.keys(rezultat[0]).length;
 
 				that.tabelaSklop.append('<div class="tabela tabela__sklop--naslov"></div>');
 
-				for (var i = 0; i < stElementov; i++) {
-					that.tabelaSklop.append('<div class="tabela tabela__sklop--naslov--td">' + rezultat[0].cena + '</div>');
-				}
+				_jquery2.default.each(naslovi, function (index, value) {
+					(0, _jquery2.default)('.tabela__sklop--naslov').append('<div class="tabela tabela__sklop--naslov--td tabela__sklop--naslov--td ' + value + '">' + value + '</div>');
+				});
 
 				for (var i = 0; i < stRezultatov; i++) {
-					that.tabelaSklop.append('<div class="tabela tabela__sklop">' + rezultat[0].cena + '</div>');
+					that.tabelaSklop.append('<div class="tabela tabela__sklop--rezultati tabela__sklop--rezultati-' + i + '"></div>');
+					_jquery2.default.each(naslovi, function (index, value) {
+						if (value == 'cena') {
+							rezultat[i][value] = rezultat[i][value].toLocaleString();
+						}
+
+						(0, _jquery2.default)('.tabela__sklop--rezultati-' + i).append('<div class="tabela tabela__sklop--rezultati--td tabela__sklop--rezultati ' + value + '">' + rezultat[i][value] + '</div>');
+					});
+					// that.tabelaSklop.append('<div class="tabela tabela__sklop">' + rezultat[0].cena + '</div>');
 				}
 			}
 		}
 	}, {
-		key: 'sestaviTabelo',
-		value: function sestaviTabelo(arrElementov) {}
+		key: 'obcina',
+		value: function obcina(rezultat) {
+			var that = this;
+			var stRezultatov = rezultat.length - 1;
+
+			if (stRezultatov > 0) {
+				// console.log(Object.keys(rezultat[0]).length);
+				var naslovi = Object.keys(rezultat[0]);
+				var stElementov = Object.keys(rezultat[0]).length;
+
+				that.tabelaObcina.append('<div class="tabela tabela__obcina--naslov"></div>');
+
+				_jquery2.default.each(naslovi, function (index, value) {
+					(0, _jquery2.default)('.tabela__obcina--naslov').append('<div class="tabela tabela__obcina--naslov--td tabela__obcina--naslov--td ' + value + '">' + value + '</div>');
+				});
+
+				for (var i = 0; i < stRezultatov; i++) {
+					that.tabelaObcina.append('<div class="tabela tabela__obcina--rezultati tabela__obcina--rezultati-' + i + '"></div>');
+					_jquery2.default.each(naslovi, function (index, value) {
+						if (value == 'cena') {
+							rezultat[i][value] = rezultat[i][value].toLocaleString();
+						}
+
+						(0, _jquery2.default)('.tabela__obcina--rezultati-' + i).append('<div class="tabela tabela__obcina--rezultati--td tabela__obcina--rezultati ' + value + '">' + rezultat[i][value] + '</div>');
+					});
+					// that.tabelaSklop.append('<div class="tabela tabela__sklop">' + rezultat[0].cena + '</div>');
+				}
+			}
+		}
+	}, {
+		key: 'projekt',
+		value: function projekt(rezultat) {
+			var that = this;
+			var stRezultatov = rezultat.length - 1;
+
+			if (stRezultatov > 0) {
+				// console.log(Object.keys(rezultat[0]).length);
+				var naslovi = Object.keys(rezultat[0]);
+				var stElementov = Object.keys(rezultat[0]).length;
+
+				that.tabelaProjekt.append('<div class="tabela tabela__projekt--naslov"></div>');
+
+				_jquery2.default.each(naslovi, function (index, value) {
+					(0, _jquery2.default)('.tabela__projekt--naslov').append('<div class="tabela tabela__projekt--naslov--td tabela__projekt--naslov--td ' + value + '">' + value + '</div>');
+				});
+
+				for (var i = 0; i < stRezultatov; i++) {
+					that.tabelaProjekt.append('<div class="tabela tabela__projekt--rezultati tabela__projekt--rezultati-' + i + '"></div>');
+					_jquery2.default.each(naslovi, function (index, value) {
+						if (value == 'cena') {
+							rezultat[i][value] = rezultat[i][value].toLocaleString();
+						}
+
+						(0, _jquery2.default)('.tabela__projekt--rezultati-' + i).append('<div class="tabela tabela__projekt--rezultati--td tabela__projekt--rezultati ' + value + '">' + rezultat[i][value] + '</div>');
+					});
+					// that.tabelaSklop.append('<div class="tabela tabela__sklop">' + rezultat[0].cena + '</div>');
+				}
+			}
+		}
 	}]);
 
 	return IzdelajTabelo;
