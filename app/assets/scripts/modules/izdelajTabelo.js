@@ -25,7 +25,7 @@ export default class IzdelajTabelo {
 
 	sklop ( rezultat ) {
 		var that = this;
-		var stRezultatov = rezultat.length - 1;
+		var stRezultatov = rezultat.length - 0;
 
 		if (stRezultatov > 0) {
 			// console.log(Object.keys(rezultat[0]).length);
@@ -58,7 +58,7 @@ export default class IzdelajTabelo {
 
 	obcina ( rezultat ) {
 		var that = this;
-		var stRezultatov = rezultat.length - 1;
+		var stRezultatov = rezultat.length - 0;
 
 		if (stRezultatov > 0) {
 			// console.log(Object.keys(rezultat[0]).length);
@@ -91,7 +91,7 @@ export default class IzdelajTabelo {
 
 	projekt ( rezultat ) {
 		var that = this;
-		var stRezultatov = rezultat.length - 1;
+		var stRezultatov = rezultat.length - 0;
 
 		if (stRezultatov > 0) {
 			// console.log(Object.keys(rezultat[0]).length);

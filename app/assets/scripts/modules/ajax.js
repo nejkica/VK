@@ -14,6 +14,18 @@ class Ajax {
 		this.btnIsci = $('.btn__isci');
 		this.insklop = $('.input__sklop');
 		this.intekst = $('.input__tekst');
+		this.maxPodobnostSklop = $('.razlaga__odstotek-sklop');
+		this.maxPodobnostObcina = $('.razlaga__odstotek-obcina');
+		this.maxPodobnostProjekt = $('.razlaga__odstotek-projekt');
+
+		this.maxCenaSklop = $('.razlaga__cena-sklop');
+		this.maxCenaObcina = $('.razlaga__cena-obcina');
+		this.maxCenaProjekt = $('.razlaga__cena-projekt');
+
+		this.avgCenaSklop = $('.razlaga__povprecje-sklop');
+		this.avgCenaObcina = $('.razlaga__povprecje-obcina');
+		this.avgCenaProjekt = $('.razlaga__povprecje-projekt');
+
 		this.vnesiVtabelo(this.sklop); //samo za prvi prikaz - navodilo za vnos v polja
 		this.events();
 	}
@@ -42,20 +54,17 @@ class Ajax {
 		var arrRezultatObcina = [];
 		var arrRezultatProjekt = [];
 
-		// var sklopKonec = 0;
-		// var obcinaKonec = 0;
-		// var projektKonec = 0;
 		var konec = 0;
 
 		function koncaj () {
 			konec += 1;
 
-			if (konec == 3) {
+			// console.log(konec);
+
+			if (konec == 6) {
 				socket.emit('zapriSejo');
 			}
 		}
-
-		// console.log('klik 12 ' + sklpVsebina + ' ' + tkstVsebina);
 
 		socket.emit('vodovodKoroska', {
 			sklop: sklpVsebina,
@@ -63,48 +72,69 @@ class Ajax {
 		});
 
 		socket.on('vodovodKoroskaVrnjeno', function(data){
-			// console.log(data);
 			arrRezultat.push(data);
 		});
+
+
 
 		socket.on('vodovodKoroskaZadnjaVrstica', function(data){ //data je v tem primeru samo 'konec'
 			
-			arrRezultat.push(data);
-			// console.log(data);
+			// arrRezultat.push(data);
 			izdelajTabelo.napolniTabelo(arrRezultat, 'sklop');
-
+			arrRezultat = [];
 			koncaj();
-			// socket.emit('zapriSejo');
 		});
 
 		socket.on('vodovodKoroskaObcinaVrnjeno', function(data){
-			// console.log(data);
 			arrRezultatObcina.push(data);
 		});
 
 		socket.on('vodovodKoroskaZadnjaVrsticaObcina', function(data){ //data je v tem primeru samo 'konec'
 			
-			arrRezultatObcina.push(data);
-			// console.log(data);
+			// arrRezultatObcina.push(data);
 			izdelajTabelo.napolniTabelo(arrRezultatObcina, 'obcina');
-
+			arrRezultatObcina = [];
 			koncaj();
-			// socket.emit('zapriSejo');
 		});
 
 		socket.on('vodovodKoroskaProjektVrnjeno', function(data){
-			// console.log(data);
 			arrRezultatProjekt.push(data);
 		});
 
 		socket.on('vodovodKoroskaZadnjaVrsticaProjekt', function(data){ //data je v tem primeru samo 'konec'
 			
-			arrRezultatProjekt.push(data);
-			// console.log(data);
+			// arrRezultatProjekt.push(data);
 			izdelajTabelo.napolniTabelo(arrRezultatProjekt, 'projekt');
-
+			arrRezultatProjekt = [];
 			koncaj();
-			// socket.emit('zapriSejo');
+		});
+
+//--------------------------------------- vrednosti v razlagah
+		socket.on('vodovodKoroskaMaxPodobnost', function(data){
+			that.maxPodobnostSklop.empty();
+			that.maxCenaSklop.empty();
+			that.avgCenaSklop.empty();
+			that.maxPodobnostSklop.append(data.max_podobnost);
+			that.maxCenaSklop.append(data.max_cena);
+			that.avgCenaSklop.append(data.povp_cena);
+		});
+
+		socket.on('vodovodKoroskaMaxPodobnostObcina', function(data){
+			that.maxPodobnostObcina.empty();
+			that.maxCenaObcina.empty();
+			that.avgCenaObcina.empty();
+			that.maxPodobnostObcina.append(data.max_podobnost);
+			that.maxCenaObcina.append(data.max_cena);
+			that.avgCenaObcina.append(data.povp_cena);
+		});
+
+		socket.on('vodovodKoroskaMaxPodobnostProjekt', function(data){
+			that.maxPodobnostProjekt.empty();
+			that.maxCenaProjekt.empty();
+			that.avgCenaProjekt.empty();
+			that.maxPodobnostProjekt.append(data.max_podobnost);
+			that.maxCenaProjekt.append(data.max_cena);
+			that.avgCenaProjekt.append(data.povp_cena);
 		});
 
 
