@@ -572,6 +572,9 @@ h1 {
 
 .zadetki-sklop__tabela {
 		width: 100%;
+		
+		
+
 	}
 
 .zadetki-obcina {
@@ -612,6 +615,14 @@ h1 {
 	padding: 0 2vw 0 0;
 	
 }
+
+.tabela__sklop-vrstica:nth-child(2n+1) {
+			background-color: rgba(204,204,204, .1);
+		}
+
+.tabela__sklop-vrstica:hover {
+		background-color: rgba(204,204,204, .5);
+	}
 
 .tabela__sklop--naslov {
 		display: table-header-group;

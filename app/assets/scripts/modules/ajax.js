@@ -136,6 +136,7 @@ class Ajax {
 			that.maxCenaProjekt.append(data.max_cena);
 			that.avgCenaProjekt.append(data.povp_cena);
 		});
+//--------------------------------------- vrednosti v razlagah - konec
 
 
 	}

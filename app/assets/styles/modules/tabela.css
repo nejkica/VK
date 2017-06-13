@@ -1,5 +1,13 @@
 .tabela {
 
+	&__sklop-vrstica:nth-child(2n+1) {
+			background-color: rgba(#CCC, .1);
+		}
+
+	&__sklop-vrstica:hover {
+		background-color: rgba(#CCC, .5);
+	}
+
 	&__sklop--naslov {
 		display: table-header-group;
 		background-color: rgba($tabelaSklop, .3);

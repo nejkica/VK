@@ -40,7 +40,7 @@ export default class IzdelajTabelo {
 
 
 			for (var i = 0; i < stRezultatov; i++) {
-				that.tabelaSklop.append('<div class="tabela tabela__sklop--rezultati tabela__sklop--rezultati-' + i + '"></div>');
+				that.tabelaSklop.append('<div class="tabela tabela__sklop--rezultati tabela__sklop--rezultati-' + i + ' tabela__sklop-vrstica"></div>');
 				$.each(naslovi, function(index, value) {
 					if (value == 'cena') {
 						rezultat[i][value] = rezultat[i][value].toLocaleString();
@@ -73,7 +73,7 @@ export default class IzdelajTabelo {
 
 
 			for (var i = 0; i < stRezultatov; i++) {
-				that.tabelaObcina.append('<div class="tabela tabela__obcina--rezultati tabela__obcina--rezultati-' + i + '"></div>');
+				that.tabelaObcina.append('<div class="tabela tabela__obcina--rezultati tabela__obcina--rezultati-' + i + ' tabela__sklop-vrstica"></div>');
 				$.each(naslovi, function(index, value) {
 					if (value == 'cena') {
 						rezultat[i][value] = rezultat[i][value].toLocaleString();
@@ -106,7 +106,7 @@ export default class IzdelajTabelo {
 
 
 			for (var i = 0; i < stRezultatov; i++) {
-				that.tabelaProjekt.append('<div class="tabela tabela__projekt--rezultati tabela__projekt--rezultati-' + i + '"></div>');
+				that.tabelaProjekt.append('<div class="tabela tabela__projekt--rezultati tabela__projekt--rezultati-' + i + ' tabela__sklop-vrstica"></div>');
 				$.each(naslovi, function(index, value) {
 					if (value == 'cena') {
 						rezultat[i][value] = rezultat[i][value].toLocaleString();
